@@ -3,6 +3,8 @@
 #include <QMainWindow>
 
 class GamePage;
+class LoginPage;
+class QStackedWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -12,5 +14,7 @@ public:
     ~MainWindow() override = default;
 
 private:
-    GamePage *m_gamePage;
+    QStackedWidget *m_stack = nullptr;
+    LoginPage *m_login = nullptr;
+    GamePage *m_game = nullptr;
 };

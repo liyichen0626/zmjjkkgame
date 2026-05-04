@@ -14,6 +14,9 @@ public:
     explicit GamePage(QWidget *parent = nullptr);
     void startNewGame();
 
+signals:
+    void backToMenuRequested();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
@@ -46,6 +49,7 @@ private:
     struct Obstacle {
         QRectF rect;
         QPointF velocity;
+        bool horizontal = true;
     };
 
     struct Trap {
@@ -61,6 +65,8 @@ private:
     struct Projectile {
         QRectF rect;
         QPointF velocity;
+        QPointF origin;
+        qreal maxRange = 400.0;
         int damage = 0;
         bool fromBoss = false;
     };
@@ -71,12 +77,17 @@ private:
     void updateStage2();
     void updateProjectiles(double dt);
     void spawnObstacleIfNeeded();
-    void spawnOrbsIfNeeded();
-    void applyDamageToPlayer(int damage);
+    void trySpawnOrbs();
+    void applyDamageToPlayer(int damage, bool playSound);
     bool chooseWeapon();
     QString weaponName() const;
+    qreal weaponAttackRange() const;
+    void drawTopCollectBar(QPainter &painter);
     void drawBars(QPainter &painter);
     void enterLevel2();
+    void resolvePlayerAgainstWalls();
+    bool isOrbPositionValid(const QRectF &candidate) const;
+    void pushPlayerOutOfRect(const QRectF &wall);
 
     QTimer m_timer;
     QElapsedTimer m_elapsed;
@@ -96,6 +107,7 @@ private:
     QVector<Trap> m_traps;
     QVector<Orb> m_orbs;
     QVector<Projectile> m_projectiles;
+    QVector<QRectF> m_level2Walls;
 
     int m_collectedOrbs = 0;
     int m_targetOrbs = 10;

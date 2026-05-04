@@ -15,6 +15,12 @@ qt_add_executable(game
     src/main.cpp
     src/mainwindow.h
     src/mainwindow.cpp
+    src/loginpage.h
+    src/loginpage.cpp
+    src/settingsdialog.h
+    src/settingsdialog.cpp
+    src/gameaudio.h
+    src/gameaudio.cpp
     src/gamepage.h
     src/gamepage.cpp
 )
